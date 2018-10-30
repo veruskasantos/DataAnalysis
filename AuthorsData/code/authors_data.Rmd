@@ -1,0 +1,132 @@
+---
+title: "Pré-processamento de dados de pesquisadores"
+author: "Veruska Santos"
+date: "2 de outubro de 2018"
+output: html_document
+---
+
+
+O objetivo deste relatório é processar e agrupar um conjunto de dados de pesquisadores na área de Computação, a fim de gerar novos arquivos CSV que facilitem à resposta de algumas perguntas especificadas.
+
+## Pré-processamento dos dados
+
+Importando biblioteca do R a ser usada para ler os dados e manipulá-los.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+Carregando os dados que serão analisados.
+
+```{r read}
+autores = read.csv(here::here("data/authors.csv"))
+etnias = read.csv(here::here("data/ethnicity.csv"))
+artigos = read.csv(here::here("data/papers.csv"))
+conferencias = read.csv(here::here("data/conferences.csv"))
+```
+
+Fazendo merge nos dados para unir todas as colunas de interesse.
+
+```{r}
+autores_etnia = merge(autores, etnias[,c('name', 'l1', 'gender')], by = "name")
+autores_etnia_artigos = merge(autores_etnia, artigos[,c('paper_key', 'conf_key', 'citations')], by = "paper_key")
+dados_autores = merge(autores_etnia_artigos, conferencias[,c('conf_key', 'year', 'cs', 'de', 'se', 'th')], by = "conf_key")
+```
+
+Função para exportar os dados em CSV.
+
+```{r}
+local_path = 'D:/Desktop/UFCG/Mestrado/Disciplinas/Visualizacao/workspace/AuthorsData/data/'
+
+salvarCSV <- function (arquivo, nome){
+  write.csv(arquivo, paste(local_path, nome, ""), row.names=FALSE)
+}
+```
+
+Separando os arquivos para facilitar a visualização de cada pergunta.
+
+```{r clean}
+#Pergunta 1:Autores de qual etnia publicam mais?
+total_etnia_por_autores <- dados_autores %>%
+  group_by(l1, gender) %>%
+  count() %>%
+  arrange(desc(n))
+
+salvarCSV(total_etnia_por_autores, 'autores_etnia_pergunta1.csv')
+
+
+#Pergunta 2: Qual a diferença da quantidade de publicações entre os homens e mulheres ao longo dos anos?
+
+total_publicacoes_por_ano <- dados_autores %>%
+  filter(gender != "-") %>%
+  group_by(year, gender) %>%
+  count() %>%
+  group_by(year) %>%
+  mutate(diff = n - lag(n, default = first(n)))  %>%
+  summarise(dif = sum(diff))
+ 
+salvarCSV(total_publicacoes_por_ano, 'total_publicacoes_por_ano_pergunta2.csv')
+
+
+#Pergunta 3: Quem são os primeiros autores, homens ou mulheres? (ALTERADO, PQ TERIA QUE CONTAR AS CITAÇÕES)
+
+total_autores_por_posicao <- dados_autores %>%
+  filter(gender != "-") %>%
+  group_by(position, gender) %>%
+  count()
+  
+salvarCSV(total_autores_por_posicao, 'total_autores_por_posicao_pergunta3.csv')
+
+
+#Pergunta 4: QUal a área de pesquisa predominante entre homem e mulheres?
+
+area_predominante_por_genero <- dados_autores %>%
+  filter(gender != "-") %>%
+  group_by(cs, de, se, th, gender) %>%
+  count()
+
+salvarCSV(area_predominante_por_genero, 'area_predominante_por_genero_pergunta4.csv')
+
+
+```
+```{r}
+
+# Proporção : mulheres / homens
+proporcao_mulheres_por_ano <- dados_autores %>%
+  filter(gender != "-") %>%
+  group_by(year, gender) %>%
+  count() %>%
+  group_by(year) %>%
+  mutate(proporcao = n / sum(n))
+
+salvarCSV(proporcao_mulheres_por_ano, 'proporcao_mulheres_por_ano.csv')
+
+```
+
+```{r}
+
+# Proporção de pesquisadores por etnia na primeira posição
+proporcao_mulheres_por_etnia <- dados_autores %>%
+  filter(gender != "-", position == 0) %>%
+  group_by(l1, gender) %>%
+  count() %>%
+  group_by(l1) %>%
+  mutate(proporcao = n / sum(n))
+
+salvarCSV(proporcao_mulheres_por_etnia, 'proporcao_mulheres_por_etnia.csv')
+
+```
+
+```{r}
+
+# Proporção de pesquisadores por etnia na primeira posição ao longo dos anos
+proporcao_mulheres_por_etnia_e_anos <- dados_autores %>%
+  filter(gender != "-", position == 0) %>%
+  group_by(year, l1, gender) %>%
+  count() %>%
+  group_by(year, l1) %>%
+  mutate(proporcao = n / sum(n))
+
+salvarCSV(proporcao_mulheres_por_etnia_e_anos, 'proporcao_mulheres_por_etnia_e_anos.csv')
+
+```

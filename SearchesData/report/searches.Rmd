@@ -1,0 +1,32 @@
+---
+title: "searches"
+author: "Veruska Santos"
+date: "30 de outubro de 2018"
+output: html_document
+---
+
+O objetivo deste relatório é processar e agrupar um conjunto de dados de contribuidores dos sites de pesquisa Stackoverflow e Superuser.
+
+## Pré-processamento dos dados
+
+Importando biblioteca do R a ser usada para ler os dados e manipulá-los.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+
+```
+
+Carregando os dados que serão analisados.
+
+```{r read}
+stackoverflow_data = read.csv(here::here("data/stackoverflow_data.csv"))
+superuser_data = read.csv(here::here("data/superuser_data.csv"))
+
+```
+
+Fazendo merge nos dados para unir todas as colunas de interesse.
+
+```{r}
+#data = merge(stackoverflow_data, superuser_data, by = "country")
+
+```
