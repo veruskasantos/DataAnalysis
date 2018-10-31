@@ -9,28 +9,30 @@ O objetivo deste relatório é processar e agrupar um conjunto de dados (coletad
 
 ## Sobre os dados
 
-Métricas socio-econômicas:
-* **GNI:** (por pessoa) é similar ao PIB (Produto Interno Bruto) brasileiro. Quanto mais recursos econômicos disponíveis, espera-se mais acesso à tecnologia e, por sua vez, um alto envolvimento nos sites.
+Métricas socio-econômicas (**variáveis independentes**):
+* **GNI:** Renda Nacional Bruta (por pessoa), similar ao PIB brasileiro. Quanto mais recursos econômicos disponíveis, espera-se mais acesso à tecnologia e, por sua vez, um alto envolvimento nos sites.
 
 * **Internet:** taxa de penetração. Dado que a participação em ambientes online requerem acesso à Internet, a porcentagem de contribuidores deve aumentar com a taxa de penetração na Internet do país.
 
 * **EPI:** é o Índice de Proficiência no Inglês. Por causa dos sites serem escritos em inglês, a porcentagem de contribuidores por país deve ser influenciado pela habilidade da população expressa-se nessa língua.
 
-Métricas culturais:
+Métricas culturais(**variáveis dependentes**):
+
+Individualismo vs Coletivismo?
 * **PDI:**
 * **IDV:**
 * **MAS:**
 * **UAI:**
-* **num_u:**
-* **num_q:**
-* **num_a:**
+* **WVS:**
+* **num_u:** número de usuários?
+* **num_q:** número de questões feitas / perguntas postadas?
+* **num_a:** número de respostas dadas/postadas?
 * **num_tp_c:**
 * **num_tp_e:**
-* **perc_a:**
-* **perc_q:**
+* **perc_a:** porcentagem de respostas dadas/postadas?
+* **perc_q:** porcentagem de questões feitas / perguntas postadas?
 * **perc_tp_c:**
 * **perc_tp_e:**
-* **WVS:**
 
 
 ## Pré-processamento dos dados
