@@ -5,7 +5,33 @@ date: "30 de outubro de 2018"
 output: html_document
 ---
 
-O objetivo deste relatório é processar e agrupar um conjunto de dados de contribuidores dos sites de pesquisa Stackoverflow e Superuser.
+O objetivo deste relatório é processar e agrupar um conjunto de dados (coletados e usados neste artigo)[https://homes.cs.washington.edu/~reinecke/Publications_files/Oliveira2016.pdf] de contribuidores dos sites de pesquisa StackOverflow e Superuser.
+
+## Sobre os dados
+
+Métricas socio-econômicas:
+* **GNI:** (por pessoa) é similar ao PIB (Produto Interno Bruto) brasileiro. Quanto mais recursos econômicos disponíveis, espera-se mais acesso à tecnologia e, por sua vez, um alto envolvimento nos sites.
+
+* **Internet:** taxa de penetração. Dado que a participação em ambientes online requerem acesso à Internet, a porcentagem de contribuidores deve aumentar com a taxa de penetração na Internet do país.
+
+* **EPI:** é o Índice de Proficiência no Inglês. Por causa dos sites serem escritos em inglês, a porcentagem de contribuidores por país deve ser influenciado pela habilidade da população expressa-se nessa língua.
+
+Métricas culturais:
+* **PDI:**
+* **IDV:**
+* **MAS:**
+* **UAI:**
+* **num_u:**
+* **num_q:**
+* **num_a:**
+* **num_tp_c:**
+* **num_tp_e:**
+* **perc_a:**
+* **perc_q:**
+* **perc_tp_c:**
+* **perc_tp_e:**
+* **WVS:**
+
 
 ## Pré-processamento dos dados
 
@@ -24,9 +50,9 @@ superuser_data = read.csv(here::here("data/superuser_data.csv"))
 
 ```
 
-Fazendo merge nos dados para unir todas as colunas de interesse.
+Juntando os dados em um dataframe só.
 
-```{r}
-#data = merge(stackoverflow_data, superuser_data, by = "country")
+```{r warning=FALSE}
+data <- dplyr::bind_rows(list(stackoverflow = stackoverflow_data, superuser = superuser_data), .id = "site")
 
 ```
