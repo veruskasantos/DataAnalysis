@@ -19,21 +19,23 @@ Métricas socio-econômicas (**variáveis independentes**):
 Métricas culturais(**variáveis dependentes**):
 
 Individualismo vs Coletivismo?
-* **PDI:**
-* **IDV:**
-* **MAS:**
+* **PDI:** distancia de poder/hierarquia
+* **IDV:** individualismo
+* **MAS:** masculinidade
 * **UAI:**
 * **WVS:**
+
 * **num_u:** número de usuários?
 * **num_q:** número de questões feitas / perguntas postadas?
 * **num_a:** número de respostas dadas/postadas?
-* **num_tp_c:**
-* **num_tp_e:**
-* **perc_a:** porcentagem de respostas dadas/postadas?
-* **perc_q:** porcentagem de questões feitas / perguntas postadas?
+* **num_tp_c:** comentário no post dos outros
+* **num_tp_e:** edição do post dos outros
+* **perc_a:** porcentagem de usuários que responderam pelo menos uma pergunta
+* **perc_q:** porcentagem de questões que perguntaram pelo menos uma pergunta
 * **perc_tp_c:**
 * **perc_tp_e:**
 
+https://www.hofstede-insights.com/models/national-culture/
 
 ## Pré-processamento dos dados
 
