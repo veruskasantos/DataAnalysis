@@ -9,33 +9,38 @@ O objetivo deste relatório é processar e agrupar um conjunto de dados (coletad
 
 ## Sobre os dados
 
-Métricas socio-econômicas (**variáveis independentes**):
+(Métricas socio-econômicas e culturais)[https://www.hofstede-insights.com/models/national-culture/] (**variáveis independentes**):
+
 * **GNI:** Renda Nacional Bruta (por pessoa), similar ao PIB brasileiro. Quanto mais recursos econômicos disponíveis, espera-se mais acesso à tecnologia e, por sua vez, um alto envolvimento nos sites.
 
 * **Internet:** taxa de penetração. Dado que a participação em ambientes online requerem acesso à Internet, a porcentagem de contribuidores deve aumentar com a taxa de penetração na Internet do país.
 
 * **EPI:** é o Índice de Proficiência no Inglês. Por causa dos sites serem escritos em inglês, a porcentagem de contribuidores por país deve ser influenciado pela habilidade da população expressa-se nessa língua.
 
-Métricas culturais(**variáveis dependentes**):
+* **PDI:** é o Índice de Distância de poder/hierarquia. Quanto menor esse índice, menor a distância entre as pessoas de diferentes níveis, ou seja, maior a relação/interação entre elas.
 
-Individualismo vs Coletivismo?
-* **PDI:** distancia de poder/hierarquia
-* **IDV:** individualismo
-* **MAS:** masculinidade
-* **UAI:**
-* **WVS:**
+* **IDV:** é o Índice de Individualismo vs Coletivismo do país, quanto maior ele, maior o individualismo.
 
-* **num_u:** número de usuários?
-* **num_q:** número de questões feitas / perguntas postadas?
-* **num_a:** número de respostas dadas/postadas?
-* **num_tp_c:** comentário no post dos outros
-* **num_tp_e:** edição do post dos outros
+* **MAS:** é o Índice de Masculinidade vs Feminidade. Quanto maior o índice, maior a masculinidade do país.
+
+* **UAI:** é o Índice de Anulação da Incerteza. Quanto maior esse índice, maior o desconforto das pessoas do país com a incerteza e a ambiguidade.
+
+* **WVS:** ...
+
+Métricas dos sites:
+
+* **num_u:** número de usuários
+* **num_q:** número de usuários que fizeram pelo menos uma pergunta
+* **num_a:** número de usuários que responderam pelo menos uma pergunta
+* **num_tp_c:** número de usuários que comentaram pelo menos um post dos outros
+* **num_tp_e:** número de usuários que editaram pelo menos um post dos outros
 * **perc_a:** porcentagem de usuários que responderam pelo menos uma pergunta
-* **perc_q:** porcentagem de questões que perguntaram pelo menos uma pergunta
-* **perc_tp_c:**
-* **perc_tp_e:**
+* **perc_q:** porcentagem de usuários que fizeram pelo menos uma pergunta
+* **perc_tp_c:** porcentagem de usuários que comentaram pelo menos um post dos outros
+* **perc_tp_e:** porcentagem de usuários que editaram pelo menos um post dos outros
 
-https://www.hofstede-insights.com/models/national-culture/
+
+Métricas culturais(**variáveis dependentes**):
 
 ## Pré-processamento dos dados
 
@@ -58,5 +63,34 @@ Juntando os dados em um dataframe só.
 
 ```{r warning=FALSE}
 data <- dplyr::bind_rows(list(stackoverflow = stackoverflow_data, superuser = superuser_data), .id = "site")
+
+```
+
+Criando nova coluna TIPO para definir quais países são Individualistas ou Coletivistas, com base na coluna IDV.
+
+```{r warning=FALSE}
+
+data$tipo <- ''
+
+for (index in 1:nrow(data)) {
+  if (data[index, 'IDV'] > 50){
+    tipo <- 'Individualista'
+  } else { 
+    tipo <- 'Coletivista'
+  }
+  data[index, 'tipo'] <- tipo
+}
+
+data
+
+```
+```{r}
+local_path = 'D:/Desktop/UFCG/Mestrado/Disciplinas/Visualizacao/workspace/SearchesData/data/'
+
+salvarCSV <- function (arquivo, nome){
+  write.csv(arquivo, paste(local_path, nome, ""), row.names=FALSE)
+}
+
+salvarCSV(data, 'searches.csv')
 
 ```
