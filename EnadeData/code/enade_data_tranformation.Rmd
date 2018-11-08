@@ -1,0 +1,55 @@
+---
+title: "Enade data transformation"
+output: html_document
+---
+
+
+```{r setup, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+Função para exportar os dados em CSV.
+
+```{r}
+local_path = '/home/veruskabs/Documentos/Mestrado/Visualizacao/workspace/DataAnalysis/EnadeData/data/'
+
+salvarCSV <- function (arquivo, nome){
+  write.csv(arquivo, paste(local_path, nome, ""), row.names=FALSE)
+}
+```
+
+Carregando os dados que serão analisados.
+
+```{r read}
+students = read.csv(here::here("data/enade_2017_pb-str.csv"))
+```
+
+Criando nova coluna *acao_afirmativa* para indicar se o estudante optou por alguma política ou não.
+
+```{r}
+
+students <- subset(students, id != 4598)
+students <- subset(students, !is.na(Seu.ingresso.no.curso.de.graduação.se.deu.por.meio.de.políticas.de.ação.afirmativa.ou.inclusão.social.))
+
+students %>%
+  filter(is.na(Seu.ingresso.no.curso.de.graduação.se.deu.por.meio.de.políticas.de.ação.afirmativa.ou.inclusão.social.))
+
+students$acao_afirmativa <- ''
+
+for (index in 1:nrow(students)) {
+  if (students[index, 'Seu.ingresso.no.curso.de.graduação.se.deu.por.meio.de.políticas.de.ação.afirmativa.ou.inclusão.social.'] == 'Não'){
+    acao_afirmativa <- 'Sim'
+  } else { 
+    acao_afirmativa <- 'Não'
+  }
+  students[index, 'acao_afirmativa'] <- acao_afirmativa
+}
+
+salvarCSV(students, 'students_enade.csv')
+
+```
+
+
+
+
+
